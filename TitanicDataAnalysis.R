@@ -194,3 +194,35 @@ male[1:5,]
 
 #--------------------------------------------------- End Get the ms mrs mr from data.combined ---------------------
 
+
+#Expand upon the relationship between 'Survived' and "Pclass" by adding the new "Title" variable
+
+#---------------------------------------------------- Create the column Title --------------------------------------
+#Create the unity fuction to help with title extraction
+extractTitle <- function(name) {
+  name <- as.character(name)
+  
+  if(length(grep("Miss.", name)) > 0){
+      return ("Miss.")
+  }else if(length(grep("Master.", name)) > 0){
+    return ("Master.")
+  }else if(length(grep("Mrs.", name)) > 0){
+    return ("Mrs")
+  }else if(length(grep("Mr.", name)) > 0){
+    return ("Mr")
+  }else {
+    return ("Other")
+  }
+}
+
+titles <- NULL
+
+for(i in 1:nrow(data.combined)) {
+  titles <- c(titles, extractTitle(data.combined[i,"Name"])) 
+}
+
+data.combined$title <- factor(titles)
+
+#---------------------------------------------------- End of Create the column Title --------------------------------------
+
+
