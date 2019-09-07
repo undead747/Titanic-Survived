@@ -1,6 +1,10 @@
 #Load raw data
 train <- read.csv("train.csv", header = TRUE)
 test <- read.csv("test.csv", header = TRUE)
+#survived <- subset.data.frame(train , Survived == 1)
+#notSurvived <- subset.data.frame(train, Survived == 0)
+
+#------------------------------------------ data table examinate -----------------------------------------
 
 #Add a "Survived" to the test set to allow for combining data sets
 #Make a new variable and call it "test.survived", after that create a new data.frame with have a combine of
@@ -10,6 +14,7 @@ test.survived <- test.survived[,c(2,1,3,4,5,6,7,8,9,10,11,12)]
 
 #Combine data sets
 data.combined <- rbind(train, test.survived)
+#------------------------------------------ end data table examinate -----------------------------------------
 
 #A bit about R data types
 str(data.combined)
@@ -35,8 +40,10 @@ table(data.combined$Pclass)
 library(ggplot2)
 
 #convert data into factor
-train$Survived <- factor(train$Survived)
 train$Pclass <- factor(train$Pclass)
+train$Sex <- factor(train$Sex)
+train$Embarked <- factor(train$Embarked)
+train$Survived <- factor(train$Survived)
 
 #---------------------------------------------------- ggplot 2 ------------------------------------------
 ggplot(train, aes(x = Survived)) + geom_bar()
@@ -154,6 +161,36 @@ ggplot(train,aes(x = Pclass, fill = Survived)) +
        title = "Titanic Rate By Class and Survival"
        )
 
-
 #---------------------------------------------------- end of ggplot 2 ------------------------------------------
+
+#--------------------------------------------------- Get the ms mrs mr from data.combined ---------------------
+
+#examine the first few names in the training data set
+head(as.character(train$Name)) 
+
+#How many unique name are there across both train and test 
+length(unique(as.character(data.combined$Name)))
+
+#Get the duplicate names and store them as a vector 
+dup.names <- as.character(data.combined[which(duplicated(as.character(data.combined$Name))), "Name"])
+table(dup.names)
+
+#Take a look at the records in data set
+data.combined[which(data.combined$Name %in% dup.names),]
+
+library(stringr)
+
+#Any correlation with other varibable(e.g, sibsp) ?
+misses <- data.combined[which(str_detect(data.combined$Name, "Miss.")), ]
+misses[1:5,]
+
+
+mres <- data.combined[which(str_detect(data.combined$Name, "Mrs.")),]
+mres[1:5,]
+
+male <- data.combined[which(train$Sex == "male"),]
+male[1:5,]
+
+
+#--------------------------------------------------- End Get the ms mrs mr from data.combined ---------------------
 
