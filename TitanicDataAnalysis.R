@@ -26,4 +26,134 @@ str(data.combined)
 data.combined$Survived <- as.factor(data.combined$Survived)
 data.combined$Pclass <- as.factor(data.combined$Pclass)
 
+#Take a look at gross survival rates 
+table(data.combined$Survived)
+
+table(data.combined$Pclass)
+
+#Load up gglot2 package to use for viusualization
+library(ggplot2)
+
+#convert data into factor
+train$Survived <- factor(train$Survived)
+train$Pclass <- factor(train$Pclass)
+
+#---------------------------------------------------- ggplot 2 ------------------------------------------
+ggplot(train, aes(x = Survived)) + geom_bar()
+
+prop.table(table(train$Survived))
+
+ggplot(train, aes(x = Survived)) +
+  theme_bw() + 
+  geom_bar() +
+  labs( y = "Passeger count", 
+        title = "titanic Survival Rates"
+  )    
+
+ggplot(train, aes(x = Sex)) + 
+  theme_bw() + 
+  geom_bar() +
+  labs( y = "Passeger count", 
+        title = "titanic Survival Rates"
+  )    
+
+ggplot(train, aes(x = Age)) + 
+  theme_light() + 
+  geom_bar() +
+  labs( y = "Passeger count", 
+        title = "titanic Survival Rates"
+  )    
+ggplot(survived, aes(x = Sex)) + 
+  theme_bw() +
+  geom_bar() + 
+  labs( y = "Passeger count", 
+        title = "titanic Survived Passeger Rates By Sex"
+  )
+
+
+ggplot(notSurvived, aes(x = Sex)) + 
+  theme_bw() +
+  geom_bar() + 
+  labs( y = "Passeger count", 
+        title = "titanic Did Not Survived Passeger Rates By Sex"
+  )
+
+ggplot(train, aes(x = Sex,fill = Survived)) + 
+  theme_bw() + 
+  geom_bar() + 
+  labs( y = "Passeger count", 
+        title = "titanic Survival Rates"
+  )    
+
+ggplot(train, aes(x = Pclass,fill = Survived)) + 
+  theme_bw() + 
+  geom_bar() + 
+  labs( y = "Passeger count", 
+        title = "titanic Survival Rates"
+  )    
+
+ggplot(train, aes(x = Sex, fill = Survived)) +
+  theme_bw() +
+  geom_bar() +
+  facet_wrap( ~ Pclass) + 
+  labs( y = "Passeger Count", 
+        title = "Titanic Survival Rates By  Pclass and Sex"
+  )
+
+ggplot(train, aes(x = Sex)) +
+  theme_bw() +
+  geom_bar() +
+  facet_wrap( ~ Survived) + 
+  labs( y = "Passeger Count", 
+        title = "Titanic Survival Rates By Sex"
+  )
+
+ggplot(train, aes(x = Age)) + 
+  theme_bw() +
+  geom_histogram(binwidth =  5) + 
+  labs(y = "Passeger Count",
+       x = "Age With Binwidth = 5",
+       title = "Titanic Age Distribtion"
+  )
+
+ggplot(train, aes(x = Age, fill = Survived)) + 
+  theme_bw() +
+  geom_histogram(binwidth =  5) + 
+  labs(y = "Passeger Count",
+       x = "Age With Binwidth = 5",
+       title = "Titanic Age Distribtion"
+  )
+
+ggplot(train, aes(x = Age, fill = Survived)) +
+  theme_bw() +
+  facet_wrap(Sex ~ Pclass) +
+  geom_density(alpha = 0.5) +
+  labs(y = "Age",
+       x = "Survived",
+       title = "Titanic survival Rates by Age, Pclass and Sex"
+  )
+
+ggplot(train, aes(x = Age, fill = Survived)) +
+  theme_bw() +
+  facet_wrap(Sex ~ Pclass) +
+  geom_histogram(binwidth = 5) +
+  labs(y = "Age",
+       x = "Survived",
+       title = "Titanic survival Rates by Age, Pclass and Sex"
+  )
+
+
+
+
+#Hypothesis - Rich folks survived at higher rate
+ggplot(train,aes(x = Pclass, fill = Survived)) +
+  theme_bw() + 
+  geom_bar() +
+  labs(x = "Class",
+       y = "Total Passager",
+       title = "Titanic Rate By Class and Survival"
+       )
+
+
+#---------------------------------------------------- end of ggplot 2 ------------------------------------------
 
