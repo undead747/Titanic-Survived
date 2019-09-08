@@ -225,4 +225,87 @@ data.combined$title <- factor(titles)
 
 #---------------------------------------------------- End of Create the column Title --------------------------------------
 
+ggplot(data.combined[1:891,], aes(x = title,fill = Survived)) +
+  theme_bw() +
+  geom_bar() +
+  facet_wrap( ~ Pclass) +
+  labs( x = "Title",
+        y = "Total Passager",
+        title = "Title"
+        )
 
+#What's the distribution of felmales to males across train & test ?
+table(data.combined$Sex)
+
+ggplot(data.combined[1:891,], aes(x = Sex, fill = Survived)) + 
+  theme_bw() +
+  geom_bar() +
+  facet_wrap(~ Pclass) +
+  labs(x = "Sex",
+      y = "Total Count",
+      title = "Rate Survival by Sex and Pclass"
+       )
+
+#Look at the distibution of age over entire date set
+summary(data.combined$Age)
+summary(data.combined[1:891,]$Age)
+
+#Validate that "Master." is a good proxy for male children
+boys <- data.combined[which(data.combined$title == "Master."),]
+summary(boys$Age)
+summary(male$Age)
+summary(misses$Age)
+
+ggplot(misses[misses$Survived != "None",],aes(x = Age,fill = Survived)) + 
+  facet_wrap(~Pclass) +
+  geom_histogram(binwidth = 5) +
+  labs( x = "Age",
+        y = "Total Count",
+        title = "Age for Miss by Pclass"
+        )
+
+misses.alone <- misses[which(misses$SibSp == 0 & misses$Parch == 0),]
+summary(misses.alone$Age)
+length(which(misses.alone$Age <= 14.5))
+
+
+summary(data.combined$SibSp)
+
+length(unique(data.combined$SibSp))
+print(unique(data.combined$SibSp))
+
+data.combined$SibSp <- factor(data.combined$SibSp)
+
+ggplot(data.combined[1:891,],aes(x = SibSp,fill = Survived)) +
+  theme_bw() +
+  geom_bar() +
+  facet_wrap(title ~ Pclass) +
+  labs(x = "Sib",
+       y = "Total Count",
+       title = "Rate Sib by title and Pclass"
+  )
+
+
+data.combined$Parch <- as.factor(data.combined$Parch)
+
+ggplot(data.combined[1:891,],aes(x = Parch,fill = Survived)) +
+  theme_bw() +
+  geom_bar() +
+  facet_wrap(title ~ Pclass) +
+  labs(x = "Sib",
+       y = "Total Count",
+       title = "Rate Patch by title and Pclass"
+  )
+
+temp.sibsp <- c(train$SibSp,test$SibSp)
+temp.parch <- c(train$Parch,test$Parch)
+data.combined$family.size <- as.factor(temp.sibsp + temp.parch + 1)
+
+
+ggplot(data.combined[1:891,],aes(x = family.size, fill = Survived)) + 
+  geom_bar() +
+  facet_wrap(Pclass ~ title) +
+  labs(x = "family Size",
+       y = "Total Count",
+       title = "Rate family size by title and Pclass"
+  )
