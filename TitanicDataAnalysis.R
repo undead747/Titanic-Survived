@@ -1,3 +1,6 @@
+# set directory
+setwd("/home/minhdeptrai/Downloads/R workspace/titanic")
+
 #Load raw data
 train <- read.csv("train.csv", header = TRUE)
 test <- read.csv("test.csv", header = TRUE)
@@ -177,7 +180,6 @@ table(dup.names)
 
 #Take a look at the records in data set
 data.combined[which(data.combined$Name %in% dup.names),]
-
 library(stringr)
 
 #Any correlation with other varibable(e.g, sibsp) ?
@@ -309,3 +311,133 @@ ggplot(data.combined[1:891,],aes(x = family.size, fill = Survived)) +
        y = "Total Count",
        title = "Rate family size by title and Pclass"
   )
+
+
+str(data.combined$Ticket)
+data.combined$Ticket <- as.character(data.combined$Ticket)
+data.combined$Ticket[1:20]
+
+
+Ticket.first.char <- ifelse(data.combined$Ticket == "", " ",substr(data.combined$Ticket,1 ,1))
+unique(Ticket.first.char)
+
+
+data.combined$Ticket.first.char <- as.factor(Ticket.first.char)
+
+ggplot(data.combined[1:891,], aes(x = Ticket.first.char, fill = Survived)) + 
+      geom_bar() +
+      theme_bw() +
+      labs( x  = "Ticket first char " ,
+            y = "Total count" ,
+            title = "Survived"
+            )
+
+summary(data.combined[1:891,"Ticket.first.char"])
+
+ggplot(data.combined[1:891,], aes(x = Ticket.first.char, fill = Survived)) + 
+  geom_bar() +
+  facet_wrap(~ Pclass) + 
+  theme_bw() +
+  labs( x  = "Ticket first char " ,
+        y = "Total count" ,
+        title = "Survived"
+  )
+
+
+
+ggplot(data.combined[1:891,], aes(x = Ticket.first.char, fill = Survived)) + 
+  geom_bar() +
+  facet_wrap(~ Pclass + title) + 
+  theme_bw() +
+  labs( x  = "Ticket first char " ,
+        y = "Total count" ,
+        ylim(0,200),
+        title = "Survived"
+  )
+
+summary(data.combined$Fare)
+length(unique(data.combined$Fare))
+str(data.combined$Fare)
+
+ggplot(data.combined, aes(x = Fare)) + 
+  geom_bar() +
+  theme_bw() +
+ labs( x  = "Ticket first char " ,
+      y = "Total count" ,
+      title = "Survived"
+)
+
+
+
+ ggplot(data.combined, aes(x = Fare)) + 
+  geom_histogram(binwidth = 5) +
+  theme_bw() +
+  labs( x  = "Ticket first char " ,
+        y = "Total count" ,
+        title = "Survived"
+  )
+
+ 
+ ggplot(data.combined[1:891,], aes(x = Fare, fill = Survived)) + 
+   geom_histogram(binwidth = 5) +
+   theme_bw() +
+   ylim(0,40) +
+   facet_wrap(Pclass ~ title) + 
+   labs( x  = "Ticket first char " ,
+         y = "Total count" ,
+         title = "Survived"
+   )
+
+ str(data.combined$Cabin)
+ 
+ data.combined$Cabin <- as.character(data.combined$Cabin)
+ data.combined$Cabin[1:100]
+ 
+ 
+ data.combined[which(data.combined$Cabin == ""),"Cabin"] <- "U"
+ data.combined$Cabin[1:100]
+ 
+ Cabin.first.char <- as.factor(substr(data.combined$Cabin,1,1))
+ str(Cabin.first.char)
+ levels(Cabin.first.char)
+
+ data.combined$Cabin.first.char <- Cabin.first.char
+ 
+ 
+ ggplot(data.combined[1:891,], aes(x = Cabin.first.char, fill = Survived)) + 
+   geom_bar() +
+   theme_bw() +
+   ylim(0,750) 
+ 
+ ggplot(data.combined[1:891,], aes(x = Cabin.first.char, fill = Survived)) + 
+   geom_bar() +
+   theme_bw() +
+   ylim(0,750) +
+   facet_wrap(~ Pclass)  
+  
+ ggplot(data.combined[1:891,], aes(x = Cabin.first.char, fill = Survived)) + 
+   geom_bar() +
+   theme_bw() +
+   ylim(0,500) +
+   facet_wrap(title ~ Pclass)  
+ 
+ 
+ data.combined$cabin.multiple <- as.factor(ifelse(str_detect(data.combined$Cabin," "),"Y","N"))
+ 
+ ggplot(data.combined[1:891,], aes(x = cabin.multiple, fill = Survived)) + 
+   geom_bar() +
+   theme_bw() +
+   ylim(0,350) +
+   facet_wrap(~ Pclass + title)  
+ 
+ str(data.combined$Embarked)
+ levels(data.combined$Embarked)
+ 
+ ggplot(data.combined[1:891,], aes(x = Embarked, fill = Survived)) + 
+   geom_bar() +
+   theme_bw() +
+   ylim(0,350) +
+   facet_wrap(~ Pclass + title)  
+ 
+ 
+ 
