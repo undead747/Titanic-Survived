@@ -438,6 +438,73 @@ ggplot(data.combined, aes(x = Fare)) +
    theme_bw() +
    ylim(0,350) +
    facet_wrap(~ Pclass + title)  
+
+#-------------------------------------------- Training model thing ----------------
+
+#--------------------------------------------- Random forest thing ---------------- 
+ #Train a Random Forest with the default param using Pclass & title 
+ library(randomForest)
+ 
+ #----------------------------- model ver 1 ----------------------------------------
+ 
+ rf.train.1 <- data.combined[1:891, c("Pclass","title")]
+ View(rf.train.1)
  
  
+ rf.label <- as.factor(train$Survived)
+ # when number in random generated it will still keep the value of the created random 
+ set.seed(1234)
+ 
+ #OOB stand for out of bag witch mean a number of data that are not include in built data for training tree
+ #OOB data can be used for testing the acurate of algorithm
+ 
+ rf.1 <- randomForest(x = rf.train.1, y = rf.label, importance = TRUE, ntree = 1000)
+ rf.1
+ varImpPlot(rf.1)
+ 
+ 
+ #----------------------------- model ver 2 ----------------------------------------
+ rf.train.2 <- data.combined[1:891,c("Pclass","title","SibSp")]
+ set.seed(1234)
+ rf.2 <- randomForest(x = rf.train.2, y = rf.label, importance =  TRUE, ntree = 1000)
+ rf.2
+ varImpPlot(rf.2)
+ #----------------------------- model ver 3 ----------------------------------------
+ rf.train.3 <- data.combined[1:891,c("Pclass","title","Parch")]
+ set.seed(1234)
+ rf.3 <- randomForest(x = rf.train.3, y = rf.label, importance = TRUE, ntree = 1000)
+ rf.3
+ 
+ #----------------------------- model ver 4 ----------------------------------------
+ rf.train.4 <- data.combined[1:891,c("Pclass","title","Parch","SibSp")]
+ set.seed(1234)
+ rf.4 <- randomForest(x = rf.train.4, y = rf.label,importance = TRUE,ntree = 1000)
+ rf.4
+ 
+ #----------------------------- model ver 5 ----------------------------------------
+ rf.train.5 <- data.combined[1:891,c("Pclass","title","family.size")]
+ set.seed(1234)
+ rf.5 <- randomForest(x = rf.train.5, y = rf.label, importance = TRUE, ntree = 1000)
+ rf.5
+ varImpPlot(rf.5)
+ 
+ 
+ #----------------------------- model ver 6 ----------------------------------------
+ rf.train.6 <- data.combined[1:891,c("Pclass","title","SibSp","family.size")]
+ set.seed(1234)
+ rf.6 <- randomForest(x = rf.train.6, y = rf.label, importance = TRUE, ntree = 1000)
+ rf.6
+ varImpPlot(rf.6)
+ 
+ 
+ #----------------------------- model ver 7 ----------------------------------------
+ rf.train.7 <- data.combined[1:891,c("Pclass","title","Parch","family.size")]
+ set.seed(1234)
+ rf.7 <- randomForest(x = rf.train.7, y = rf.label, importance = TRUE, ntree = 1000)
+ rf.7
+ varImpPlot(rf.7)
+ 
+    #--------------------------------------------- End of Random forest thing ---------------- 
+
+ #-------------------------------------------- End of Training model thing ----------------
  
